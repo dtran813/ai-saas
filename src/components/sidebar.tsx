@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Nunito } from "next/font/google";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/utils/constant";
@@ -10,6 +11,8 @@ import { ROUTES } from "@/utils/constant";
 const nunito = Nunito({ weight: "700", subsets: ["latin"] });
 
 const Sidebar = () => {
+  const pathname = usePathname();
+
   return (
     <div className="flex h-full flex-col space-y-4 bg-[#202c46] py-4 text-white">
       <div className="flex-1 px-3 py-2">
@@ -26,7 +29,12 @@ const Sidebar = () => {
             <Link
               key={route.href}
               href={route.href}
-              className="group flex w-full cursor-pointer justify-start rounded-lg p-3 text-sm font-medium transition hover:bg-white/10 hover:text-white"
+              className={cn(
+                "group flex w-full cursor-pointer justify-start rounded-lg p-3 text-sm font-medium transition hover:bg-white/10 hover:text-white",
+                pathname === route.href
+                  ? "bg-white/10 text-white"
+                  : "text-zinc-400"
+              )}
             >
               <div className="flex flex-1 items-center">
                 <route.icon className={cn("mr-3 h-6 w-6", route.color)} />
