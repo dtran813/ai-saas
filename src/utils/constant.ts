@@ -1,11 +1,11 @@
 import {
   Code,
-  ImageIcon,
+  Image,
   LayoutDashboard,
   MessageSquare,
   Music,
   Settings,
-  VideoIcon,
+  Video,
 } from "lucide-react";
 
 export const ROUTES = [
@@ -23,13 +23,13 @@ export const ROUTES = [
   },
   {
     label: "Image Generation",
-    icon: ImageIcon,
+    icon: Image,
     href: "/image",
     color: "text-pink-600",
   },
   {
     label: "Video Generation",
-    icon: VideoIcon,
+    icon: Video,
     href: "/video",
     color: "text-orange-600",
   },
@@ -63,14 +63,14 @@ export const TOOLS = [
   },
   {
     label: "Image Generation",
-    icon: ImageIcon,
+    icon: Image,
     href: "/image",
     color: "text-pink-600",
     bgColor: "bg-pink-600/10",
   },
   {
     label: "Video Generation",
-    icon: VideoIcon,
+    icon: Video,
     href: "/video",
     color: "text-orange-600",
     bgColor: "bg-orange-600/10",
