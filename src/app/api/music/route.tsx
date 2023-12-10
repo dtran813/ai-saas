@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN!,
@@ -23,8 +24,9 @@ export async function POST(req: Request) {
     }
 
     const isFreeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
 
-    if (!isFreeTrial) {
+    if (!isFreeTrial && !isPro) {
       return new NextResponse(
         "Your free trial has ended. Upgrade to the Pro plan to continue.",
         {
@@ -42,11 +44,13 @@ export async function POST(req: Request) {
       }
     );
 
-    await increaseApiLimit();
+    if (!isPro) {
+      await increaseApiLimit();
+    }
 
     return NextResponse.json(response);
   } catch (error) {
-    console.log("[MUSIC_ERROR]", error);
+    console.error("[MUSIC_ERROR]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

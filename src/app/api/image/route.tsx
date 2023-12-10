@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -39,8 +40,9 @@ export async function POST(req: Request) {
     }
 
     const isFreeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
 
-    if (!isFreeTrial) {
+    if (!isFreeTrial && !isPro) {
       return new NextResponse(
         "Your free trial has ended. Upgrade to the Pro plan to continue.",
         {
@@ -55,11 +57,13 @@ export async function POST(req: Request) {
       size: resolution,
     });
 
-    await increaseApiLimit();
+    if (!isPro) {
+      await increaseApiLimit();
+    }
 
     return NextResponse.json(response.data.data);
   } catch (error) {
-    console.log("[IMAGE_ERROR]", error);
+    console.error("[IMAGE_ERROR]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
