@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { ChatCompletionRequestMessage } from "openai";
 import ReactMarkdown from "react-markdown";
+import toast from "react-hot-toast";
 
 import { Heading } from "@/components/heading";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -54,6 +55,8 @@ const CodePage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong!");
       }
     } finally {
       router.refresh();

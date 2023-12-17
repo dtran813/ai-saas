@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import {
   Dialog,
@@ -30,7 +31,7 @@ export const ProModal = () => {
 
       window.location.href = response.data.url;
     } catch (error) {
-      console.error(error, "STRIPE_CLIENT_ERROR");
+      toast.error("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +74,7 @@ export const ProModal = () => {
             variant="gradient"
             className="w-full"
             onClick={onSubscribe}
+            disabled={isLoading}
           >
             Upgrade <Zap className="ml-2 h-4 w-4 fill-white" />
           </Button>
